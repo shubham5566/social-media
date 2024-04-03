@@ -21,6 +21,15 @@ function CreatePost() {
     const numberOfReaction = numberOfReactionElement.current.value;
     const hashtags = hashtagsElement.current.value.split( ' ');
 
+    // reset
+    userIdElement.current.value =" "
+    postTitleElement.current.value=" "
+    postContentElement.current.value=" "
+    numberOfReactionElement.current.value=" "
+    hashtagsElement.current.value= " "
+
+
+
     addPost(userId, postTitle, postContent, numberOfReaction, hashtags);
   };
   return (
