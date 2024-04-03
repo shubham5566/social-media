@@ -7,25 +7,27 @@ import Footer from "./componants/Footer/Footer";
 import CreatePost from "./componants/post/CreatePost";
 import Posts from "./componants/post/Posts";
 import PostList from "./componants/post/PostList";
+import PostListProvider from "./store/Post-list-store";
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState("Create post")
+  const [selectedTab, setSelectedTab] = useState("Home");
   return (
-    <div className=" layout d-flex  justify-content-between  flex-gap">
-      <Sidebar setSelectedTab ={setSelectedTab} ></Sidebar>
+    <PostListProvider>
+      <div className=" layout d-flex  justify-content-between  flex-gap">
+        <Sidebar setSelectedTab={setSelectedTab}></Sidebar>
 
-      <div className="w-100  ">
-        <Header></Header>
-             {
-              selectedTab  === "Home" ?   <PostList ></PostList> :<CreatePost></CreatePost>
+        <div className="w-100  ">
+          <Header></Header>
+          {selectedTab === "Home" ? (
+            <PostList></PostList>
+          ) : (
+            <CreatePost></CreatePost>
+          )}
 
-             }
-        
-       
-       
-        <Footer></Footer>
+          <Footer></Footer>
+        </div>
       </div>
-    </div>
+    </PostListProvider>
   );
 }
 

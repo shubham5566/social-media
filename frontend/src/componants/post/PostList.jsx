@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Posts from './Posts'
+import {PostList as PostListData} from '../../store/Post-list-store'
 
 function PostList() {
+  const {postList}=useContext(PostListData)
   return (
     <div className="d-flex flex-wrap gap-4">
-    <Posts></Posts>
-    <Posts></Posts>
-    <Posts></Posts>
-    <Posts></Posts>
+    {
+      postList.map((post)=>< Posts key={post.id} post = {post}/>)
+    }
     
     </div>
     
