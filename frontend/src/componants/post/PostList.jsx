@@ -7,7 +7,7 @@ function PostList() {
   return (
     <div className="d-flex flex-wrap gap-4">
     {
-      postList.map((post)=>< Posts key={post.id} post = {post}/>)
+      postList.map((post)=>< Posts key={post.Id} post = {post}/>)
     }
     
     </div>

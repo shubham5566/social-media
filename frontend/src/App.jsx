@@ -13,13 +13,14 @@ function App() {
   const [selectedTab, setSelectedTab] = useState("Home");
   return (
     <PostListProvider>
-      <div className=" layout d-flex  justify-content-between  flex-gap">
+      <div className=" layout m-2 d-flex flex-row justify-content-between gap-2  ">
         <Sidebar setSelectedTab={setSelectedTab}></Sidebar>
 
-        <div className="w-100  ">
+        <div className="w-100 d-flex flex-column gap-4 ">
           <Header></Header>
           {selectedTab === "Home" ? (
-            <PostList></PostList>
+            
+            <PostList ></PostList>
           ) : (
             <CreatePost></CreatePost>
           )}

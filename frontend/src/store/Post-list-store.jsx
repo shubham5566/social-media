@@ -12,6 +12,9 @@ const postListReducer = (currentPostList, action)=>{
   if(action.type === 'DELETE_POST'){
     newPostList = currentPostList.filter((post)=>(post.Id !== action.payload.postId))
 
+  } else if( action.type === 'ADD_POST'){
+    newPostList =[ action.payload, ...currentPostList]
+
   }
   return newPostList;
  
@@ -19,7 +22,23 @@ const postListReducer = (currentPostList, action)=>{
 
 const PostListProvider = ({ children }) => {
   const [postList, dispatchPostList] = useReducer(postListReducer,DEFAULT_POST_LIST);
-  const addPost = () => {};
+  const addPost = ( userId, postTitle, postContent, numberOfReaction, hashtags) => {
+    // console.log(userId, postTitle, postContent, numberOfReaction, hashtags)
+    dispatchPostList({
+
+      type:'ADD_POST',
+      payload:{
+        Id:Date.now(),
+        title: postTitle,
+        body: postContent,
+        userId:userId,
+        reactions:numberOfReaction,
+        tags: hashtags
+
+    },
+    }
+    )
+  };
   const deletePost = (postId) =>{
    dispatchPostList(
     {
@@ -58,7 +77,7 @@ const DEFAULT_POST_LIST = [
         body:"masti kare bhi pass ho gaye ",
         userId:"user-12",
         reactions:4,
-        tags:["unbilibable","pass"]
+        tags:["unbilivable","pass"]
 
     }
 ]
