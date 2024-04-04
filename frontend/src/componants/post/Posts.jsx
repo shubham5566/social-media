@@ -15,7 +15,7 @@ function Posts({post}) {
         <div className=' d-flex justify-content-between' >
 
         <Card.Title>{post.title}</Card.Title>
-        <Badge bg="danger"  className="mt-2" onClick={()=>deletePost(post.Id)}><MdDelete/></Badge>
+        <Badge bg="danger"  className="mt-2" onClick={()=>deletePost(post.id)}><MdDelete/></Badge>
         </div>
         <Card.Text>
          {post.body}
