@@ -1,82 +1,86 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useState, useReducer } from "react";
 
-export const PostList = createContext(
-  {
-    postList: [],
+export const PostList = createContext({
+  postList: [],
   addPost: () => {},
-  addInitialPost: ()=>{},
+  fetchingData: false,
   deletePost: () => {},
-  }
-);
-const postListReducer = (currentPostList, action)=>{
-  let newPostList = currentPostList
-  if(action.type === 'DELETE_POST'){
-    newPostList = currentPostList.filter((post)=>(post.id !== action.payload.postId))
-
-  } else if(  action.type === 'ADD_INITIAL_POST'){
-    newPostList = action.payload.posts
-
-  } else if( action.type === 'ADD_POST'){
-    newPostList =[ action.payload, ...currentPostList]
-
+});
+const postListReducer = (currentPostList, action) => {
+  let newPostList = currentPostList;
+  if (action.type === "DELETE_POST") {
+    newPostList = currentPostList.filter(
+      (post) => post.id !== action.payload.postId
+    );
+  } else if (action.type === "ADD_INITIAL_POST") {
+    newPostList = action.payload.posts;
+  } else if (action.type === "ADD_POST") {
+    newPostList = [action.payload, ...currentPostList];
   }
   return newPostList;
- 
-}
+};
 
 const PostListProvider = ({ children }) => {
-  const [postList, dispatchPostList] = useReducer(postListReducer,[]);
-  const addPost = ( userId, postTitle, postContent, numberOfReaction, hashtags) => {
+  const [postList, dispatchPostList] = useReducer(postListReducer, []);
+  const [fetchingData, setFetchingData] = useState(false);
+
+  const addPost = (post) => {
+    console.log(post);
     // console.log(userId, postTitle, postContent, numberOfReaction, hashtags)
     dispatchPostList({
-
-      type:'ADD_POST',
-      payload:{
-        Id:Date.now(),
-        title: postTitle,
-        body: postContent,
-        userId:userId,
-        reactions:numberOfReaction,
-        tags: hashtags
-
-    },
-    }
-    )
+      type: "ADD_POST",
+      payload: post,
+    });
   };
-  const addInitialPost = ( posts) => {
-    
+  const addInitialPost = (posts) => {
     dispatchPostList({
-
-      type:'ADD_INITIAL_POST',
-      payload:{
-       posts
-
-    },
-    }
-    )
+      type: "ADD_INITIAL_POST",
+      payload: {
+        posts,
+      },
+    });
   };
-  const deletePost = (postId) =>{
-   dispatchPostList(
-    {
-      type:'DELETE_POST',
-      payload:{
-        postId
-      }
-    }
-    
-   )
-  //  , console.log(`this post is delete ${postId}`)
-  }
-  return(
 
-      <PostList.Provider value={
-       {
-        postList, addPost, deletePost, addInitialPost
+  const deletePost = (postId) => {
+    dispatchPostList({
+      type: "DELETE_POST",
+      payload: {
+        postId,
+      },
+    }); 
+  };
+  useEffect(() => {
+    setFetchingData(true);
+    const controller = new AbortController();
+    const signal = controller.signal;
+    fetch("https://dummyjson.com/posts", { signal})
+      .then((res) => res.json())
+      .then((data) => {
+        addInitialPost(data.posts);
+        // console.log(data,"shubham")
+        setFetchingData(false);
+      });
 
-       }
-      }>{children}</PostList.Provider>
-  )
+    return () => {
+      console.log(`abort UseEffe `);
+      controller.abort();
+    };
+  }, []);
+ 
+  return (
+    <PostList.Provider
+      value={{
+        postList,
+        fetchingData,
+        addPost,
+        deletePost,
+      }}
+    >
+      {children}
+    </PostList.Provider>
+  );
 };
+
 // const DEFAULT_POST_LIST = [
 //     {
 //         Id:'1',

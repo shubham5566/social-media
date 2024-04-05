@@ -27,10 +27,25 @@ function CreatePost() {
     postContentElement.current.value=" "
     numberOfReactionElement.current.value=" "
     hashtagsElement.current.value= " "
+    
+    fetch('https://dummyjson.com/posts/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+      
+        title: postTitle,
+        body: postContent,
+        userId:userId,
+        reactions:numberOfReaction,
+        tags: hashtags
+      })
+    })
+    .then(res => res.json())
+    .then(post => addPost(post) );
 
 
 
-    addPost(userId, postTitle, postContent, numberOfReaction, hashtags);
+    
   };
   return (
     <div className="w-50 m-auto card p-4">
