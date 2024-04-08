@@ -8,6 +8,8 @@ import CreatePost from "./componants/post/CreatePost";
 import Posts from "./componants/post/Posts";
 import PostList from "./componants/post/PostList";
 import PostListProvider from "./store/Post-list-store";
+import { Outlet } from "react-router-dom";
+
 
 function App() {
   const [selectedTab, setSelectedTab] = useState("Home");
@@ -18,13 +20,7 @@ function App() {
 
         <div className="w-100 d-flex flex-column gap-4 ">
           <Header></Header>
-          {selectedTab === "Home" ? (
-            
-            <PostList ></PostList>
-          ) : (
-            <CreatePost></CreatePost>
-          )}
-
+         <Outlet/>
           <Footer></Footer>
         </div>
       </div>

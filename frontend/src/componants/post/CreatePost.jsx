@@ -4,8 +4,10 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/esm/Button";
 import { PostList  } from "../../store/Post-list-store";
+import { useNavigate } from "react-router-dom";
 
 function CreatePost() {
+  const navigate = useNavigate()
   const { addPost } = useContext(PostList);
 
   const userIdElement = useRef();
@@ -42,6 +44,7 @@ function CreatePost() {
     })
     .then(res => res.json())
     .then(post => addPost(post) );
+    navigate("/")
 
 
 
